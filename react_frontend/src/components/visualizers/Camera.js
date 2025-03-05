@@ -4,6 +4,9 @@ import {
   CameraMonitorIcon,
   CameraNotFoundIcon,
 } from "../../styles/camera_driver/CameraDriverIcons";
+import PropTypes from "prop-types";
+import { Box } from "@mui/system";
+import { CircularProgress, Typography } from "@mui/material";
 
 function decode_utf8(s) {
   return decodeURIComponent(escape(s));
@@ -120,6 +123,7 @@ const Camera = () => {
     if (!isVisualReady) return;
 
     const startCamera = () => {
+      console.log("Start camera");
       // configure media parameters
       const constraints = {
         video: true,
@@ -171,7 +175,6 @@ const Camera = () => {
       }
       if (message.data.state === "application_running") {
         dispatch({ type: "cameraPause", payload: false });
-        captureFrame();
         dispatch({
           type: "udpateStartTime",
           payload: { startTime: performance.now() },
@@ -199,18 +202,6 @@ const Camera = () => {
     if (!isVisualReady || !isCameraReady) return;
 
     const callback = (message) => {
-      if (message.data.update.image) {
-        if (message.data.update.image) {
-          let image_data = JSON.parse(message.data.update.image);
-          let source = decode_utf8(image_data.image);
-
-          if (source.length > 0)
-            setImageData(`data:image/jpeg;base64,${source}`);
-        }
-
-        // Send the ACK of the msg
-        //window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
-      }
       // receive ack from gui.py
       if (message.data.update.ack_img === "ack" && !isCameraPause) {
         // call next frame
@@ -279,63 +270,49 @@ const Camera = () => {
   ]);
 
   return (
-    <div className={styles.camera_container}>
-      {/* Contenedor de la primera imagen (video) */}
-      <div className={styles.video_section}>
-        {/* When get any error from webRtc Camera */}
-        {!isCameraReady && (
-          <div className={styles.camera_error}>
-            <CameraNotFoundIcon />
-            {msg.length > 0 && (
-              <h3 className={styles.camera_error_msg}>{msg}</h3>
-            )}
-          </div>
-        )}
-        <video ref={videoRef} autoPlay className={styles.camera_video} />
-      </div>
-
-      {/* Contenedor flex-container con fondo blanco */}
-      <div className={styles.camera_partition}>
-        {/* Este es el contenedor intermedio que separa las dos imágenes, ahora con fondo blanco */}
-      </div>
-
-      {/* Contenedor de la segunda imagen */}
-      <div className={styles.camera_output_section}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        maxHeight: "100%",
+        width: "100%",
+        height: "100%",
+        textAlign: "center",
+      }}
+    >
+      {!isCameraReady ? (
+        <div className={styles.camera_error}>
+          <CameraNotFoundIcon />
+          {msg.length > 0 && <h3 className={styles.camera_error_msg}>{msg}</h3>}
+        </div>
+      ) : (
         <div
-          className={styles.camera_static_section}
-          onClick={() =>
-            dispatch({ type: "showCameraStatics", payload: !showCameraStatics })
-          }
+          style={{
+            width: "auto",
+            padding: "5px",
+            position: "absolute",
+            bottom: "10px",
+            display: "flex",
+            flexDirection: "row",
+            gap: "20px",
+            backgroundColor: "white",
+            border: "solid 2px black",
+            borderRadius: "5px",
+          }}
         >
-          {!showCameraStatics ? (
-            <div className={styles.camera_static_icon}>
-              <CameraMonitorIcon cssClass="icon_color" />
-            </div>
-          ) : (
-            <div className={styles.camera_static_box}>
-              <div className={styles.camera_static_fps}>
-                <p>{fps < 10 ? (fps === 0 ? `0` : `0${fps}`) : fps}</p>
-                <span>FPS</span>
-              </div>
-              <div className={styles.camera_static_lat}>
-                <div>
-                  <p>
-                    {latency >= 1000 ? (latency / 1000).toFixed(0) : latency}
-                  </p>
-                  <span> {latency >= 1000 ? ` s` : ` ms`}</span>
-                </div>
-                <span>LAT.</span>
-              </div>
-            </div>
-          )}
+          <label id="fps-counter" style={{margin: "0px"}}>
+            {fps < 10 ? (fps === 0 ? `FPS: 0` : `FPS: 0${fps}`) : `FPS: ${fps}`}
+          </label>
+          <label id="latency-counter" style={{margin: "0px"}}>
+            {latency >= 1000
+              ? `LAT: ${(latency / 1000).toFixed(0)} s`
+              : `LAT: ${latency} ms`}
+          </label>
         </div>
-        <div>
-          {imageData && (
-            <img src={imageData} alt="Imagen" className={styles.output_image} />
-          )}
-        </div>
-      </div>
-    </div>
+      )}
+      <video ref={videoRef} autoPlay className={styles.camera_video} />
+    </Box>
   );
 };
 
