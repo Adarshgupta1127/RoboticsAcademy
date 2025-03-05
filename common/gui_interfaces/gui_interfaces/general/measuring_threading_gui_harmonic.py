@@ -38,8 +38,10 @@ class MeasuringThreadingGUI:
 
         self.ideal_cycle = 80
         self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': '', 'fps':'', 'lat':''}
         self.iteration_counter = 0
+        self.fps = -1
+        self.lat = -1
 
         self.running = True
 
@@ -118,7 +120,7 @@ class MeasuringThreadingGUI:
             self.iteration_counter = 0
             brain_frequency = round(1000 / measured_cycle, 1) if measured_cycle != 0 else 0
             gui_frequency = round(1000 / self.ideal_cycle, 1)
-            self.frequency_message = {'brain': brain_frequency, 'gui': gui_frequency, 'rtf': self.real_time_factor}
+            self.frequency_message = {'brain': brain_frequency, 'gui': gui_frequency, 'rtf':self.real_time_factor, 'fps': self.fps, 'lat': self.lat}
             message = json.dumps(self.frequency_message)
 
             self.send_to_client(message)

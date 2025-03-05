@@ -1,16 +1,10 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import styles from "./../../styles/camera_driver/camera_driver.module.css";
 import {
-  CameraMonitorIcon,
   CameraNotFoundIcon,
 } from "../../styles/camera_driver/CameraDriverIcons";
-import PropTypes from "prop-types";
 import { Box } from "@mui/system";
-import { CircularProgress, Typography } from "@mui/material";
 
-function decode_utf8(s) {
-  return decodeURIComponent(escape(s));
-}
 // webRTC error message
 const cameraErrorMessages = {
   NotAllowedError: "Camera access denied by the user.",
@@ -27,8 +21,6 @@ const initialState = {
   isVisualReady: false,
   showCameraStatics: false,
 
-  latency: 0,
-  fps: 0,
   countFrames: 0,
   startTime: 0,
 
@@ -45,10 +37,6 @@ const reducer = (state, action) => {
       return { ...state, isVisualReady: action.payload };
     case "showCameraStatics":
       return { ...state, showCameraStatics: action.payload };
-    case "updateLatency":
-      return { ...state, latency: action.payload.latency };
-    case "updateFps":
-      return { ...state, fps: action.payload.fps };
     case "updateCountFrames":
       return { ...state, countFrames: action.payload.countFrames };
     case "udpateStartTime":
@@ -182,7 +170,10 @@ const Camera = () => {
       } else if (message.data.state === "paused") {
         dispatch({ type: "cameraPause", payload: true });
 
-        dispatch({ type: "updateFps", payload: { fps: 0 } });
+        window.RoboticsExerciseComponents.commsManager.send(
+          "gui",
+          `introspection:${0}/${0}`
+        );
 
         dispatch({
           type: "updateCountFrames",
@@ -223,7 +214,10 @@ const Camera = () => {
           const fps = Math.ceil(countFrames / (elapsedTime / 1000)).toFixed(0);
 
           // udpate fps
-          dispatch({ type: "updateFps", payload: { fps } });
+          window.RoboticsExerciseComponents.commsManager.send(
+            "gui",
+            `introspection:${fps}/${latency.toFixed(0)}`
+          );
 
           // reset count frames
           dispatch({
@@ -237,14 +231,6 @@ const Camera = () => {
             payload: { startTime: currTime },
           });
         }
-
-        // udpate statics on front end after 500ms
-        setTimeout(() => {
-          dispatch({
-            type: "updateLatency",
-            payload: { latency: latency.toFixed(0) },
-          });
-        }, 500);
       }
     };
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -264,7 +250,6 @@ const Camera = () => {
     isVisualReady,
     isCameraReady,
     //
-    fps,
     startTime,
     countFrames,
   ]);
@@ -281,34 +266,10 @@ const Camera = () => {
         textAlign: "center",
       }}
     >
-      {!isCameraReady ? (
+      {!isCameraReady && (
         <div className={styles.camera_error}>
           <CameraNotFoundIcon />
           {msg.length > 0 && <h3 className={styles.camera_error_msg}>{msg}</h3>}
-        </div>
-      ) : (
-        <div
-          style={{
-            width: "auto",
-            padding: "5px",
-            position: "absolute",
-            bottom: "10px",
-            display: "flex",
-            flexDirection: "row",
-            gap: "20px",
-            backgroundColor: "white",
-            border: "solid 2px black",
-            borderRadius: "5px",
-          }}
-        >
-          <label id="fps-counter" style={{margin: "0px"}}>
-            {fps < 10 ? (fps === 0 ? `FPS: 0` : `FPS: 0${fps}`) : `FPS: ${fps}`}
-          </label>
-          <label id="latency-counter" style={{margin: "0px"}}>
-            {latency >= 1000
-              ? `LAT: ${(latency / 1000).toFixed(0)} s`
-              : `LAT: ${latency} ms`}
-          </label>
         </div>
       )}
       <video ref={videoRef} autoPlay className={styles.camera_video} />
