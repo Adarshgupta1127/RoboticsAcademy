@@ -27,8 +27,8 @@
 }
 /* video */
 .camera_video {
-  width: auto;
-  height: auto;
+  width: fit-content;
+  height: fit-content;
   max-width: 100%;
   object-fit: contain;
 }
