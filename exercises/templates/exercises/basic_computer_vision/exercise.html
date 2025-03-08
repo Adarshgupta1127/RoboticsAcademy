@@ -6,7 +6,6 @@
 
 {% block react-content %}
     {% react_component exercise/basic_computer_vision/BasicComputerVisionRR %}
-
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
             {% react_component components/layout_components/MainAppBar exerciseName="Basic Computer Vision" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/basic_computer_vision"%} 
             {% react_component components/visualizers/WorldIndicator %} {% end_react_component %}  
@@ -19,7 +18,10 @@
                         {% react_component components/editors/EditorRobot %}{% end_react_component %}
                         {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
-                        {% react_component components/visualizers/Camera%}{% end_react_component %}
+                        {% react_component components/wrappers/FlexContainer%} 
+                            {% react_component exercise/basic_computer_vision/SpecificBasicComputerVision %}{% end_react_component %}
+                            {% react_component components/visualizers/Camera%}{% end_react_component %}
+                        {% end_react_component %}
                 {% end_react_component %}
             {% end_react_component %}
         {% react_component components/message_system/Loading %}{% end_react_component %}

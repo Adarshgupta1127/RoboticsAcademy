@@ -204,7 +204,6 @@ class Exercise(models.Model):
             "exercise_id": self.exercise_id,
             "exercise_config": configurations,
         }
-        print(context)
         return context
 
     class Meta:
