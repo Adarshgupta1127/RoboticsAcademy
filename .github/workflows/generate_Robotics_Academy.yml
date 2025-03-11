@@ -107,7 +107,7 @@ jobs:
         run: |
           cd scripts/RADI
           if [ "${{ github.event.inputs.ROS }}" == "humble" ]; then
-            docker build --no-cache -f Dockerfile.humble_RA \
+            docker build --no-cache -f Dockerfile.humble \
               --build-arg ROBOTICS_ACADEMY=${{ github.event.inputs.RA }}\
               --build-arg ROBOTICS_INFRASTRUCTURE=${{ github.event.inputs.RI }} \
               --build-arg RAM=${{ github.event.inputs.RAM }} \

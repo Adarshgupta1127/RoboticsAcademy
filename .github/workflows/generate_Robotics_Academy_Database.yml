@@ -74,7 +74,7 @@ jobs:
       - name: Build and push RA database
         run: |
           cd scripts/RADI
-          docker build --no-cache -f Dockerfile.database_RA \
+          docker build --no-cache -f Dockerfile.database \
             --build-arg IMAGE_TAG=${TAG}\
             --build-arg ROBOTICS_ACADEMY=${{ github.event.inputs.RA }}\
             --build-arg ROBOTICS_INFRASTRUCTURE=${{ github.event.inputs.RI }} \
