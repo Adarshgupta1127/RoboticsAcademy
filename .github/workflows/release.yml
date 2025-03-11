@@ -1,0 +1,28 @@
+# Generates and uploads an image of Robotics Academy and Robotics Academy database using the desired tag and branches
+name: Release new Robotics Academy Version on new version
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  generate-RA-docker-image:
+    name: Generate Robotics Academy Image
+    uses: ./.github/workflows/generate_Robotics_Academy.yml
+    with:
+      tag: ${{ github.ref_name }}
+      latest: true
+      RA: humble-devel
+      RI: humble-devel
+      RAM: humble-devel
+      ROS: humble
+    secrets: inherit
+  generate-RA-database-docker-image:
+    name: Generate Robotics Academy Database Image
+    uses: ./.github/workflows/generate_Robotics_Academy_Database.yml
+    with:
+      tag: ${{ github.ref_name }}
+      latest: true
+      RA: humble-devel
+      RI: database
+    secrets: inherit
