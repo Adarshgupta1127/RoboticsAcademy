@@ -61,8 +61,6 @@ class Map:
         scale_x =  83
         offset_x = 8
         x = scale_x * (offset_x - x)
-
-        self.last_known_pose = (x, y, pose.yaw)
         return x, y, pose.yaw
 
     def getRobotCoordinatesWithNoise(self):
