@@ -49,11 +49,11 @@ class Map:
 
     def getRobotCoordinates(self):
         pose = self.pose_getter()
-        if pose.x == 0.0 and pose.y == 0.0:
+        if pose.timeStamp == 0.0:
             return None
         x = pose.x
         y = pose.y
-
+        
         scale_y = -85
         offset_y = -6.88
         y = scale_y * (offset_y - y)
@@ -65,7 +65,7 @@ class Map:
 
     def getRobotCoordinatesWithNoise(self):
         pose = self.noisy_pose_getter()
-        if pose.x == 0.0 and pose.y == 0.0:
+        if pose.timeStamp == 0.0:
             return None
         x = pose.x
         y = pose.y
