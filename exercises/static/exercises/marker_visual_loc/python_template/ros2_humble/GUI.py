@@ -31,13 +31,15 @@ class GUI(MeasuringThreadingGUI):
 
     # Prepares and send image to the websocket server
     def update_gui(self):
-        pos_message = self.map.getRobotCoordinates()
-        pos_message = str(pos_message)
-        self.payload["real_pose"] = pos_message
+        if self.map.getRobotCoordinates() is not None:
+            pos_message = self.map.getRobotCoordinates()
+            pos_message = str(pos_message)
+            self.payload["real_pose"] = pos_message
 
-        n_pos_message = self.map.getRobotCoordinatesWithNoise()
-        n_pos_message = str(n_pos_message)
-        self.payload["noisy_pose"] = n_pos_message
+        if self.map.getRobotCoordinatesWithNoise() is not None:
+            n_pos_message = self.map.getRobotCoordinatesWithNoise()
+            n_pos_message = str(n_pos_message)
+            self.payload["noisy_pose"] = n_pos_message
 
         if np.any(self.predict_pose):
             p_pos_message = str(self.predict_pose)

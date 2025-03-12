@@ -49,8 +49,8 @@ class Map:
 
     def getRobotCoordinates(self):
         pose = self.pose_getter()
-        if pose is None or (pose.x == 0.0 and pose.y == 0.0):
-            return 581.00, 457.299, -1.55
+        if pose.x == 0.0 and pose.y == 0.0:
+            return None
         x = pose.x
         y = pose.y
 
@@ -65,8 +65,8 @@ class Map:
 
     def getRobotCoordinatesWithNoise(self):
         pose = self.noisy_pose_getter()
-        if pose is None or (pose.x == 0.0 and pose.y == 0.0):
-            return 581.00, 457.299, -1.55
+        if pose.x == 0.0 and pose.y == 0.0:
+            return None
         x = pose.x
         y = pose.y
 
