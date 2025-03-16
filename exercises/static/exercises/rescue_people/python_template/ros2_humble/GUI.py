@@ -31,6 +31,8 @@ class GUI(MeasuringThreadingGUI):
         self.real_time_factor = 0
         self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
         self.iteration_counter = 0
+        self.fps = 0
+        self.lat = 0
 
         self.start()
 
