@@ -25,7 +25,7 @@ function SpecificVisualLoc(props) {
   var userLastPose = undefined;
   var valuesUntilValid = 0;
 
-  const timeout = 40;
+  const timeout = 0;
 
   const beacons = [
     { id: "tag_0", x: 518.75, y: 270.325, type: "hor" },
