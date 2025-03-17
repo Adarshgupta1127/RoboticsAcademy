@@ -1,8 +1,9 @@
 import * as React from "react";
+import noImage from "../../assets/img/noImage.png";
 
 import "./css/GUICanvas.css";
 
-export default function SpecificPickPlace() {
+function SpecificPickPlace() {
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
     const callback = (message) => {
@@ -59,3 +60,5 @@ export default function SpecificPickPlace() {
     </div>
   );
 }
+
+export default SpecificPickPlace;

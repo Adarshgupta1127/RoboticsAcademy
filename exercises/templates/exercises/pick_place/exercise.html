@@ -8,7 +8,7 @@
     {% if deployment %}
         {% react_component exercise/pick_place/PickPlace %}
             {% react_component components/containers/MaterialBox id="exercise-container" %}
-            {% react_component components/common/MainAppBar exerciseName="Pick and Place" url="https://jderobot.github.io/RoboticsAcademy/exercises/Drones/pick_place"%} 
+            {% react_component components/common/MainAppBar exerciseName="Pick and Place" url="https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/pick_place"%} 
             {% react_component RA_links/WorldSelectorRA %} {% end_react_component %}  
             {% end_react_component %}
             {% react_component components/containers/MaterialBox id="content" %}
@@ -33,7 +33,7 @@
     {% else %}
         {% react_component exercise/pick_place/PickPlace %}
             {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-                {% react_component components/layout_components/MainAppBar exerciseName="Pick and Place" url="https://jderobot.github.io/RoboticsAcademy/exercises/Drones/pick_place"%} 
+                {% react_component components/layout_components/MainAppBar exerciseName="Pick and Place" url="https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/pick_place"%} 
                 {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
                 {% end_react_component %} 
             {% react_component components/wrappers/MaterialBox id="content" %}
