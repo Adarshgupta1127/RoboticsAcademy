@@ -104,6 +104,7 @@ _site
 
 # react stuff
 node_modules/
+checksum.txt
 
 lerna-debug.log
 npm-debug.log*
