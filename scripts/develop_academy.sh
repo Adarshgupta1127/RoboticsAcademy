@@ -51,9 +51,9 @@ echo "RAM src: $ram_version"
 echo "RAM branch: $branch"
 echo "RoboticsBackend version: $radi_version"
 
-# Install docker-compose if not installed
-if ! command -v docker-compose &> /dev/null; then
-  sudo apt install docker-compose
+# Check docker compose installation
+if ! command -v docker compose &> /dev/null; then
+  echo "Docker Compose V2 is not installed. Please install it."
 fi
 
 # Clone the desired RAM fork and branch
@@ -112,3 +112,5 @@ if [ "$nvidia" = "true" ]; then
 else
   docker compose up
 fi 
+
+cleanup
