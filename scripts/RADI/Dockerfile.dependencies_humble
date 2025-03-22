@@ -62,7 +62,6 @@ RUN add-apt-repository ppa:openrobotics/gazebo11-gz-cli
 RUN apt-get update && apt-get install -y \
         gazebo11 \
         ros-humble-gazebo-ros-pkgs \
-        ros-humble-gazebo-ros2-control \
         gstreamer1.0-plugins-bad \
         gstreamer1.0-plugins-good \
         gstreamer1.0-plugins-ugly \
@@ -297,6 +296,8 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && rosdep update
 RUN vcs import < abb_ros2/abb.repos
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
 WORKDIR /home/industrial_ws/src
+RUN git clone https://github.com/ros-controls/gazebo_ros2_control.git
+RUN cd gazebo_ros2_control && git reset --hard 9a3736c # Commit for the 0.4.6 version!
 RUN git clone https://github.com/IFRA-Cranfield/IFRA_LinkAttacher.git
 RUN git clone https://github.com/IFRA-Cranfield/IFRA_ObjectPose.git
 RUN git clone https://github.com/IFRA-Cranfield/IFRA_LinkPose.git
@@ -314,6 +315,7 @@ RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
 RUN echo 'export AEROSTACK2_PATH=/home/drones_ws/src/aerostack2' >> ~/.bashrc
 RUN echo 'source $AEROSTACK2_PATH/as2_cli/setup_env.bash' >> ~/.bashrc
 RUN echo "source /home/drones_ws/install/setup.bash" >> ~/.bashrc
+RUN echo "source /home/industrial_ws/install/setup.bash" >> ~/.bashrc
 
 # Download and install OMPL library
 COPY install-ompl-ubuntu.sh /
