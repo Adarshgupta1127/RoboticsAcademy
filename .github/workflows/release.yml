@@ -37,11 +37,7 @@ jobs:
         run: |
           sudo apt-get update
           cd scripts/RADI
-          if [ "${{ github.event.inputs.ROS }}" == "humble" ]; then
-            docker build -f Dockerfile.dependencies_humble -t jderobot/robotics-applications:dependencies-humble .
-          else
-            echo "Incorrect ROS version"
-          fi
+          docker build -f Dockerfile.dependencies_humble -t jderobot/robotics-applications:dependencies-humble .
       - name: Build and push RADI
         run: |
           cd scripts/RADI
