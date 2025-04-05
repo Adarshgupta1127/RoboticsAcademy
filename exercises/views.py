@@ -89,3 +89,17 @@ def user_code_zip(request, exercise_id):
 
     except Exception as e:
         return Response({"success": False, "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+def start_simulation(request, exercise_id):
+    try:
+        exercise_path = os.path.join(settings.BASE_DIR, f"exercises/static/exercises/{exercise_id}/launch.sh")
+
+        # Make sure launch.sh is executable
+        subprocess.call(["chmod", "+x", exercise_path])
+
+        # Launch the simulator in the background
+        subprocess.Popen(["bash", exercise_path])
+
+        return JsonResponse({"status": "started"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
