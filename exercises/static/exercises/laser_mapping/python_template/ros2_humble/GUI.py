@@ -59,8 +59,10 @@ class GUI(MeasuringThreadingGUI):
     def setUserMap(self, image):
         if image.shape[0] != 970 or image.shape[1] != 1500:
             raise ValueError('map passed has the wrong dimensions, it has to be 970 pixels high and 1500 pixels wide')
-        processed_image = np.stack((image,) * 3, axis=-1)
+        processed_image = np.stack((image,) * 3, axis=-1)      # Prepare processed image and blank image
+        blank_map = np.zeros((970, 1500, 3), dtype=np.uint8)
         with self.image_lock:
+             self.user_map = blank_map.copy()  # reset before setting new map
             self.user_map = processed_image
     
     def poseToMap(self, x_prime, y_prime, yaw_prime):
