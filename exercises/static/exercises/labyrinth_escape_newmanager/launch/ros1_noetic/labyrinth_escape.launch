@@ -13,4 +13,35 @@
     
     <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(arg perspective)"/>
     <node name="my_solution" pkg="drone_wrapper" type="play_python_code" output="screen" args="$(arg solution_file_name)"/>
+     <gazebo>
+        <model name="depth_camera">
+            <static>true</static>
+            <pose>0 0 2 0 0 0</pose>
+            <link name="link">
+                <sensor name="depth_camera" type="depth">
+                    <always_on>true</always_on>
+                    <update_rate>30</update_rate>
+                    <visualize>true</visualize>
+                    <camera>
+                        <horizontal_fov>1.047</horizontal_fov>
+                        <image>
+                            <width>640</width>
+                            <height>480</height>
+                            <format>R8G8B8</format>
+                        </image>
+                        <clip>
+                            <near>0.1</near>
+                            <far>10</far>
+                        </clip>
+                    </camera>
+                    <plugin name="depth_camera_controller" filename="libgazebo_ros_depth_camera.so">
+                        <camera_name>depth_camera</camera_name>
+                        <image_topic_name>image_raw</image_topic_name>
+                        <camera_info_topic_name>camera_info</camera_info_topic_name>
+                        <frame_name>depth_camera_link</frame_name>
+                    </plugin>
+                </sensor>
+            </link>
+        </model>
+    </gazebo>
 </launch> 
